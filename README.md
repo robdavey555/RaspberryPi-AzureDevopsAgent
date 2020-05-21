@@ -54,3 +54,8 @@ Check that it installed
 I have used the ```--restart=always``` so the container(s) will start automatically after a reboot. You can run multiple containers and get multiple agents if you wish, just change the ```AZP_AGENT_NAME``` and ```--name``` variables in step 7 above.
   
   
+# Notes
+
+- Remember that this build agent will have minimal capabilities. You can use tasks in your pipeline to install capabilites. For example, if you want dotnet then use the ``` Use .Net Core sdk``` task at the begining of your pipeline - https://docs.microsoft.com/en-gb/azure/devops/pipelines/tasks/tool/dotnet-core-tool-installer?view=azure-devops
+
+- Each time your container restarts you'll loose your cache
