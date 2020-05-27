@@ -21,6 +21,10 @@ RUN apt-get update \
 		wget \
 		unzip
 
+#Install terraform
+RUN wget https://releases.hashicorp.com/terraform/0.12.24/terraform_0.12.24_linux_arm.zip
+RUN unzip terraform_0.12.24_linux_arm.zip -d /usr/local/bin
+
 WORKDIR /azp
 
 COPY ./start.sh .

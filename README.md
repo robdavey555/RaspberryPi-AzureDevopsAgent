@@ -59,3 +59,5 @@ I have used the ```--restart=always``` so the container(s) will start automatica
 - Remember that this build agent will have minimal capabilities. You can use tasks in your pipeline to install capabilites. For example, if you want dotnet then use the ``` Use .Net Core sdk``` task at the begining of your pipeline - https://docs.microsoft.com/en-gb/azure/devops/pipelines/tasks/tool/dotnet-core-tool-installer?view=azure-devops
 
 - Each time your container restarts you'll loose your cache
+
+- The agent will include terraform version 0.12.24 as you cannot install Terraform via the task from Azure Devops on ARM architecture
