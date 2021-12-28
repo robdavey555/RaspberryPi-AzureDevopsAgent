@@ -1,6 +1,5 @@
 # RaspberryPi-AzureDevopsAgent
 
-
 My starting point is:
 
 - Raspberry Pi 4 Model B Starter Kit
@@ -10,53 +9,53 @@ My starting point is:
 - PuTTY for connecting remotely to the Pi from a laptop (Optional)
 
 ## Azure Devops Setup
+
 Check this link for details on creating your PAT token
-  
-  https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=preview-page
-  
-  Check this link for creating an App Pool
-  
-  https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/agents?view=azure-devops&tabs=browser#capabilities
+
+https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=preview-page
+
+Check this link for creating an App Pool
+
+https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/agents?view=azure-devops&tabs=browser#capabilities
 
 ## Install Docker
 
-```sudo apt install docker.io```
+`sudo apt install docker.io`
 
-```sudo systemctl enable --now docker```
+`sudo systemctl enable --now docker`
 
 Check that it installed
 
-```docker --version```
-
+`docker --version`
 
 ## Create Docker Image
 
 1. Create a directory
-  ```makdir agent```
-  
+   `makdir agent` and then `cd agent`
+
 2. Create Dockerfile
-  ```nano Dockerfile```
-  
+   `nano Dockerfile`
+
 3. Copy and past the contents of the Dockerfile from this repo (it's in the **linux-ARM directory**)
 
 4. Create start.sh file
-  ```nano start.sh```
-  
+   `nano start.sh`
+
 5. Copy and past the contents of the start.sh from this repo (it's in the **linux-ARM directory**)
 
 6. Build the image
-  ```docker build -t dockeragent:latest .```
-  
+   `docker build -t dockeragent:latest .`
+   Note: you may need to run `sudo chmod 666 /var/run/docker.sock` to enable docker to run this command
+
 7. Run the image to create your container updayting the 2 variables for Project and PAT (Note my App pool is called SelfHosted so you many need to change that too)
 
-  ```sudo docker run --restart=always  -e AZP_URL=https://dev.azure.com/<YourProject> -e AZP_TOKEN=<PAT TOKEN> -e AZP_POOL=SelfHosted -e AZP_AGENT_NAME=pi-agent1 --name DevopsAgent1 dockeragent:latest```
-  
-I have used the ```--restart=always``` so the container(s) will start automatically after a reboot. You can run multiple containers and get multiple agents if you wish, just change the ```AZP_AGENT_NAME``` and ```--name``` variables in step 7 above.
-  
-  
+`sudo docker run --restart=always -e AZP_URL=https://dev.azure.com/<YourProject> -e AZP_TOKEN=<PAT TOKEN> -e AZP_POOL=SelfHosted -e AZP_AGENT_NAME=pi-agent1 --name DevopsAgent1 dockeragent:latest`
+
+I have used the `--restart=always` so the container(s) will start automatically after a reboot. You can run multiple containers and get multiple agents if you wish, just change the `AZP_AGENT_NAME` and `--name` variables in step 7 above.
+
 # Notes
 
-- Remember that this build agent will have minimal capabilities. You can use tasks in your pipeline to install capabilites. For example, if you want dotnet then use the ``` Use .Net Core sdk``` task at the begining of your pipeline - https://docs.microsoft.com/en-gb/azure/devops/pipelines/tasks/tool/dotnet-core-tool-installer?view=azure-devops
+- Remember that this build agent will have minimal capabilities. You can use tasks in your pipeline to install capabilites. For example, if you want dotnet then use the ` Use .Net Core sdk` task at the begining of your pipeline - https://docs.microsoft.com/en-gb/azure/devops/pipelines/tasks/tool/dotnet-core-tool-installer?view=azure-devops
 
 - Each time your container restarts you'll loose your cache
 
